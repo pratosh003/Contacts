@@ -1,49 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
 
-class AddContact extends React.Component {
-  state = {
+const AddContact = (props) => {
+  const [state, setState] = useState({
     name: "",
     email: ""
-  };
+  });
 
-  add = (e) => {
+  const nav = useNavigate();
+
+  const add = (e) => {
     e.preventDefault();
-    if(this.state.name === "" || this.state.email === ""){
+    
+    if (state.name === "" || state.email === "") {
       alert("All fields are mandatory!!!");
+      return;
     };
 
-    this.props.addContactHandler(this.state);
-    this.setState({name:"", email:""});
-    return;
+    props.addContactHandler(state);
+    setState({ name: "", email: "" });
+    nav('/');
   }
+  
 
+  return (
+    <div>
+      <div className="container p-5">
+        <Form onSubmit={add}>
+          <h4>Add Contact</h4>
+          <Form.Group className="mb-3" controlId="formBasicText">
+            <Form.Label>Name</Form.Label>
+            <Form.Control type="text" placeholder="Name" value={state.name} onChange={(e) => setState({ ...state, name: e.target.value })} />
+          </Form.Group>
 
-  render() {
-    return (
-      <div>
-        <div className = "container p-5">
-          <Form onSubmit = {this.add}>
-            <h4>Add Contact</h4>
-            <Form.Group className="mb-3" controlId="formBasicText">
-              <Form.Label>Name</Form.Label>
-              <Form.Control type="text" placeholder="Name" value = {this.state.name} onChange = {(e) => this.setState({name: e.target.value})}/>
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" value = {this.state.email} onChange = {(e) => this.setState({email: e.target.value})}/>
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        </div>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" value={state.email} onChange={(e) => setState({ ...state, email: e.target.value })} />
+          </Form.Group>
+          
+          <Button variant="primary" type="submit">Submit</Button>
+        </Form>
       </div>
-    )
-  }
+    </div>
+  );
 }
 
 export default AddContact;
