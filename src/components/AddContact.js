@@ -44,6 +44,7 @@ const AddContact = (props) => {
         </Form>
       </div>
     </div>
+    
   );
 }
 
